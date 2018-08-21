@@ -1,0 +1,19 @@
+{
+    "name": "admin/reseau_social",
+    "authors": [
+        {
+            "name": "Eliam LOTONGA",
+            "email": "e.lotonga.sen@gmail.com"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "Database\\": "Database/"
+        },
+		"files": [
+        	"./Utilities/errors_css.php",
+            "./Utilities/functions.php"
+    	]
+	},
+    "require": {}
+}
