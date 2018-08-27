@@ -3,7 +3,7 @@
 $lang['form']['message']['required'] 				= "Le champs ':attribute' est requis !";
 $lang['form']['message']['min']						= "Le :attribute doit contenir au moins :min caractères !";
 $lang['form']['message']['email']					= "Le format de ce mail est incorrect !";
-$lang['form']['message']['mail_already_used']		= "Cette adresse mail est deja utilisé ! veuillez en rentrer une autre.";
+$lang['form']['message']['already_used']			= "Désolé ! :attribute deja utilisé(e) ! veuillez en rentrer un(e) autre.";
 $lang['form']['message']['bad_password_confirm']	= "S'il vous plait ! veuillez rentrer le même mot de passe !";
 $lang['form']['message']['bad_password']			= "Le mot de passe n'est pas";
 $lang['form']['message']['bad_identifier']			= "L'identifiant n'est bon !";

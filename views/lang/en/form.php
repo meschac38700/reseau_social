@@ -3,7 +3,7 @@
 $lang['form']['message']['required'] 				= "The ':attribute' field is required !";
 $lang['form']['message']['min']						= "The ':attribute' must contain at least :min characters";
 $lang['form']['message']['email']					= "The format of this email is incorrect !";
-$lang['form']['message']['mail_already_used']		= "This email address has already been  used! please enter another one .";
+$lang['form']['message']['already_used']			= "Sorry ! This :attribute has already been used! please enter another one .";
 $lang['form']['message']['bad_password_confirm']	= "please ! Enter the same password !";
 $lang['form']['message']['fail_identification']		= "Impossible to sign in ! please check your id or your password";
 

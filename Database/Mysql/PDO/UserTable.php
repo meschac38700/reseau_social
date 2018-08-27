@@ -16,22 +16,29 @@ class UserTable
 
 	public function __construct( $data )
 	{
-		include(__DIR__.'/../../../config/app.php');
-		$this->pdo = new \PDO(
-								'mysql:host='.$config['database']['host'].
-								';dbname='.$config['database']['dbname'],
-								$config['database']['user'],
-								$config['database']['password']
-							);
-		$this->pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
-		$this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+		try
+		{
+			include(__DIR__.'/../../../config/database.php');
+			$this->pdo = new \PDO(
+									'mysql:host='.$config['database']['host'].
+									';dbname='.$config['database']['dbname'],
+									$config['database']['user'],
+									$config['database']['password']
+								);
+			$this->pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
+			$this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
 
-		$this->last_name	= $data['last_name']??null;
-		$this->first_name	= $data['first_name']??null; 
-		$this->email 		= $data['email']??null;
-		$this->pseudo		= $data['pseudo']??null;
-		$this->password		= $data['password']??null;
-		$this->identifier	= $data['identifier']??null;
+			$this->last_name	= $data['last_name']??null;
+			$this->first_name	= $data['first_name']??null; 
+			$this->email 		= $data['email']??null;
+			$this->pseudo		= $data['pseudo']??null;
+			$this->password		= $data['password']??null;
+			$this->identifier	= $data['identifier']??null;
+		}
+		catch(\Exception $e)
+		{
+			die('impossible de se connecter à la bdd !\n'.$e->getMessage());
+		}
 	}
 
 	/**
@@ -182,15 +189,25 @@ class UserTable
 		return $user;
 	}
 
-	public function identifier()
+	/**
+	 * identifier an user
+	 * @param  [type] $filter [description]
+	 * @return [type]         [description]
+	 */
+	public function identifier($filter=null, $validePassword= false)
 	{
 		$user = null;
 		try
 		{
-			$user = $this->get();
-			if( $user && $user->password === sha1($this->password) )
+			$user = $this->get($filter);
+			if( $user )
 			{
-				return $user;
+				if( $validePassword ) // si demande de validation du mdp utilisateur (ex : en cas de connexion)
+				{
+					if( $user->password === sha1($this->password) ) return $user;
+					return false;
+				}
+				return $user;//sinon retournons l'utilisateur trouvé
 			}
 		}
 		catch(\Exception $e)

@@ -31,4 +31,5 @@ include('../views/partials/_header.php');
 </div>
 
 <?php
+session_destroy();
 include('../views/partials/_footer.php');

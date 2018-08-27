@@ -1,8 +1,12 @@
 <?php
-
+//demarrage de la session
+if(session_status() == PHP_SESSION_NONE)
+{
+	session_start();
+}
 require("../vendor/autoload.php");
-include('../config/app.php');
-include('../views/lang/'.$config['lang'].'/form.php');
+include("../config/app.php");
+include("../views/lang/".$config['lang']."/form.php");
 use Database\Mysql\PDO\UserTable;
 
 $error_fields =[];
@@ -18,14 +22,22 @@ if( isset($_POST['inscription']) )
 		//verifier si le champ last_name contient au moins 3 caractères
 		if(mb_strlen($last_name) < 3 ) 
 		{
-			$error_fields['last_name'] = getMessgae($lang['form']['field']['last_name'],$lang['form']['message']['min'], 3 );
+			$error_fields['last_name'] = getMessage($lang['form']['field']['last_name'],$lang['form']['message']['min'], 3 );
 		}
 		
 		//verifier si le champ first_name contient au moins 3 caractères
 		if( mb_strlen($first_name) < 3 )
 		{
-			$error_fields['first_name'] = getMessgae($lang['form']['field']['first_name'],$lang['form']['message']['min'], 3 );
+			$error_fields['first_name'] = getMessage($lang['form']['field']['first_name'],$lang['form']['message']['min'], 3 );
 		}
+		
+		//verifier si le pseudo n'est pas deja utilisé
+		if( $user->identifier($user->getPseudo()))
+		{
+			$error_fields['pseudo'] = getMessage($lang['form']['field']['pseudo'], $lang['form']['message']['already_used']);
+		}
+
+
 		
 		// verifier si le champs email est bel et bien un email
 		if ( filter_var($email, FILTER_VALIDATE_EMAIL) )
@@ -36,7 +48,7 @@ if( isset($_POST['inscription']) )
 
 			if($check_email)
 			{
-				$error_fields['email'] = $lang['form']['message']['mail_already_used'];
+				$error_fields['email'] = getMessage($lang['form']['field']['pseudo'], $lang['form']['message']['already_used']);
 			}
 		}
 		else
@@ -50,12 +62,12 @@ if( isset($_POST['inscription']) )
 			// verifier si le champs confirmer mot de passe correspond au mot de passe rentré pécédemment !
 			if( $password !== $password_confirm)
 			{
-				$error_fields['password_confirm'] = getMessgae($lang['form']['field']['password_confirm'],$lang['form']['message']['bad_password_confirm']);
+				$error_fields['password_confirm'] = getMessage($lang['form']['field']['password_confirm'],$lang['form']['message']['bad_password_confirm']);
 			}
 		}
 		else
 		{
-			$error_fields['password'] = getMessgae($lang['form']['field']['password'],$lang['form']['message']['min'], 6 );
+			$error_fields['password'] = getMessage($lang['form']['field']['password'],$lang['form']['message']['min'], 6 );
 		}
 		
 		//Si tous s'est bien passé, le formulaire a été bien remplis ...
@@ -64,8 +76,6 @@ if( isset($_POST['inscription']) )
 			$success = $user->insert();
 			if( $success['status'] )
 			{
-				//Demarrage de la start
-				session_start();
 				//Stockage des données de l'utilisateur en session
 				$_SESSION['pseudo'] 	= $pseudo;
 				$_SESSION['email'] 		= $email;
@@ -73,18 +83,18 @@ if( isset($_POST['inscription']) )
 				$_SESSION['first_name'] = $first_name;
 				// redirection vers la page de profile de l'utilisateur
 				header("Location: profile.php");
+				exit();
 			}
 			else
 			{
-				//En cas d'erreur lors de la création du compte redirection vers la page erreur.php
-				session_start();
+				//En cas d'erreur lors de la création du compte redirection vers la page erreur.php			
 				$_SESSION['erreur_message'] = $success['message'];
 				header("Location: erreur.php");
+				exit();
 			}
 		}
+		
 	}
 }
-
-
 
 include("../views/inscription.view.php");

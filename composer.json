@@ -11,8 +11,9 @@
             "Database\\": "Database/"
         },
 		"files": [
-        	"./Utilities/errors_css.php",
-            "./Utilities/functions.php"
+            "./Utilities/functions.php",
+            "./config/access.php",
+            "config/app.php"
     	]
 	},
     "require": {}

@@ -1,8 +1,5 @@
 <?php
-
-
-
-if( !function_exists('replace_attribute_to_field_name') )
+if( !function_exists('getMessage') )
 {
 	/**
 	 * replace :attribute in the msg to the fieldName
@@ -10,7 +7,7 @@ if( !function_exists('replace_attribute_to_field_name') )
 	 * @param  string $msg       origin msg
 	 * @return string            new msg 
 	 */
-	function getMessgae( $fieldName, $msg, $min=3)
+	function getMessage( $fieldName, $msg, $min=3)
 	{
 		if( $min )
 		{
@@ -34,11 +31,52 @@ if( !function_exists('not_empty') )
 		$error_fields = [];
 		foreach($fields as $key => $value )
 		{
-			if( empty($value) )
+			if( empty($value) || trim($value) === "")
 			{
 				$error_fields[$key] = getMessgae($lang['form']['field'][$key],$lang['form']['message']['required'] );
 			}
 		}
 		return $error_fields;
+	}
+}
+
+if( !function_exists('active') )
+{
+	function active( $current_page )
+	{
+		$uri = explode('/',$_SERVER["REQUEST_URI"] );
+		$page = $uri[1];
+		if( $page == $current_page )
+		{
+			return 'active';
+		}
+	}
+}
+
+if( !function_exists('has_error') )
+{
+	function has_error( $field, $error_fields )
+	{
+		$langs = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
+		if( array_key_exists($field, $error_fields) )
+		{
+			return "has-error";
+		}
+		return "";
+	}
+}
+
+if(!function_exists('error_span') )
+{
+	function error_span($field, $error_fields )
+	{
+		//si un champs est erroné 
+		if( array_key_exists($field, $error_fields) )
+		{
+			//affichage du span avec le message d'erreur
+			echo "<span class='text-danger'>$error_fields[$field]</span>";
+			
+		}
 	}
 }
