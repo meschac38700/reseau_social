@@ -157,7 +157,7 @@ class UserTable
 	{
 		try
 		{
-			$result = $this->pdo->query("select * from users where id =:id");
+			$result = $this->pdo->prepare("select * from users where id =:id");
 			$query->execute( ['id'=>$id ?? $this->id] );
 			return $query->fetch();
 		}
@@ -190,6 +190,16 @@ class UserTable
 	}
 
 	/**
+	 * active the current user
+	 * @return [type] [description]
+	 */
+	public function active($pseudo)
+	{
+		$request = "UPDATE users SET active ='1' WHERE pseudo = '".$pseudo."'";
+		$success = $this->pdo->query($request);
+		return $success;
+	}
+	/**
 	 * identifier an user
 	 * @param  [type] $filter [description]
 	 * @return [type]         [description]
@@ -204,7 +214,10 @@ class UserTable
 			{
 				if( $validePassword ) // si demande de validation du mdp utilisateur (ex : en cas de connexion)
 				{
-					if( $user->password === sha1($this->password) ) return $user;
+					if( $user->password === sha1($this->password) )
+					{
+						return $user;
+					}
 					return false;
 				}
 				return $user;//sinon retournons l'utilisateur trouvé

@@ -73,17 +73,29 @@ if( isset($_POST['inscription']) )
 		//Si tous s'est bien passé, le formulaire a été bien remplis ...
 		if( empty($error_fields) )
 		{
-			$success = $user->insert();
+			
+			$success 	= $user->insert();
 			if( $success['status'] )
 			{
-				//Stockage des données de l'utilisateur en session
-				$_SESSION['pseudo'] 	= $pseudo;
-				$_SESSION['email'] 		= $email;
-				$_SESSION['last_name'] 	= $last_name;
-				$_SESSION['first_name'] = $first_name;
-				// redirection vers la page de profile de l'utilisateur
-				header("Location: profile.php");
-				exit();
+				//Envoie d'un mail d'activation 
+
+				$to 		= $email;
+				$from_user	= $config['app_name'];
+				$from_email = $config['email'];
+				$subject 	= $config['app_name']. " - Activation de compte";
+				$token 		= sha1($pseudo.$email.$password);
+				$activation_url = $config['web_url'] . '/activation.php?user='.$pseudo.'&amp;token='.$token;
+				
+				//memoire temporaire de la vue email activation
+				ob_start();
+				require(__DIR__.'/../views/emails/activation_account.view.php');
+				$content = ob_get_clean();
+				
+				//sendEmailUTF_8($to, $from_user, $from_email, $subject = '(No subject)', $message = '')
+				$emailSend = sendEmailUTF_8($to, $from_user, $from_email, $subject, $content);
+
+				//redirection vers la page rappelle activation compte
+				header('Location: rappelle-activation.php?user='.$pseudo.'&email='.$email);
 			}
 			else
 			{

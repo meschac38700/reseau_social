@@ -21,6 +21,21 @@ if( !function_exists('getMessage') )
 	}
 }
 
+if( !function_exists('sendEmailUTF_8'))
+{
+	function sendEmailUTF_8($to, $from_user, $from_email, $subject = '(No subject)', $message = '')
+	{
+
+      	$from_user = "=?UTF-8?B?".base64_encode($from_user)."?=";
+      	$subject = "=?UTF-8?B?".base64_encode($subject)."?=";
+      	// Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+     	$headers = 'MIME-Version: 1.0'."\r\n";
+     	$headers .= 'Content-type: text/html; charset=iso-8859-1';
+
+     	return mail($to, $subject, $message, $headers);
+
+	}
+}
 
 if( !function_exists('not_empty') )
 {
@@ -33,7 +48,7 @@ if( !function_exists('not_empty') )
 		{
 			if( empty($value) || trim($value) === "")
 			{
-				$error_fields[$key] = getMessgae($lang['form']['field'][$key],$lang['form']['message']['required'] );
+				$error_fields[$key] = getMessage($lang['form']['field'][$key],$lang['form']['message']['required'] );
 			}
 		}
 		return $error_fields;
