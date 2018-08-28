@@ -33,7 +33,7 @@ read -p "Enter mysql root's password : " password
 read -p "Would you custom database's name ? (o/n): " response
 
 #if user want to define (him/her)sefl the name of the database
-if [ $response = "o" ]; then
+if [ ! -z $response ] && [ $response -eq "o"  ]; then
 	#ask him/her to enter a name
  	read -p 'Database name : ' dbName
 else 
@@ -58,8 +58,8 @@ create database IF NOT EXISTS ${dbName};
 	INSERT INTO users(last_name, first_name, pseudo, password, email, active) 
 				VALUES ( '${user_last_name}', '${user_first_name}', '${user_pseudo}', sha1('${user_password}'), '${user_email}', '${user_active}' );
 "
-echo -e "${GREEN} Database ${NC} ${YELLOW} ${dbName} ${NC} ${GREEN} created with table users \nAnd inserted the first user with pseudo ${NC} ${YELLOW} ${user_pseudo} ${NC} ${GREEN} and password ${NC} ${YELLOW} ${user_password} ${NC} "
+echo -e "${GREEN}Database ${NC}[${YELLOW}${dbName}${NC}] ${GREEN}created with table users\nAnd inserted the first user with pseudo ${NC}[${YELLOW}${user_pseudo}${NC}]${GREEN} and password ${NC}[${YELLOW}${user_password}${NC}]"
 
-echo -e "${RED} Press enter button to exit ${NC}"
+echo -e "${RED}Press enter button to exit ${NC}"
 read quit
 exit
