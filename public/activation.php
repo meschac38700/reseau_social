@@ -14,8 +14,7 @@ if( !empty($_GET['user']) && !empty($_GET['token']) )
 	{
 		// Activer le compte utitlisateur
 		$success = $user_instance->active( $user->pseudo );
-		var_dump($success);
-		die(); 
+		
 		//Stockage des données de l'utilisateur en session
 		$_SESSION['user']['pseudo'] 	= $user->pseudo;
 		$_SESSION['user']['email'] 		= $user->email;
@@ -27,7 +26,6 @@ if( !empty($_GET['user']) && !empty($_GET['token']) )
 	}
 	else
 	{
-		
 		$_SESSION['erreur_message'] = "Il y a eu un problème lors de la tentive d'activation du compte !";
 		header('Location: erreur.php');
 		exit();

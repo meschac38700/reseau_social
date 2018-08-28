@@ -28,23 +28,23 @@ if( isset($_POST['connexion']) )
 			header('Location: connexion.php');
 			exit();
 		}
-		//Stockage des données de l'utilisateur en session
-		$_SESSION['user']['pseudo'] 	= $user->pseudo;
-		$_SESSION['user']['email'] 		= $user->email;
-		$_SESSION['user']['last_name'] 	= $user->last_name;
-		$_SESSION['user']['first_name'] = $user->first_name;
-		//Si le compte n'est pas encore activé rediriger vers la vue message activation compte
 		
-		if( $user->active === '0' )
+		if( $user->active == '1' )
 		{
-			header('Location: rappelle-activation.php?user='.$user->pseudo.'&email='.$user->email);
-			exit();
+			//Stockage des données de l'utilisateur en session
+			$_SESSION['user']['pseudo'] 	= $user->pseudo;
+			$_SESSION['user']['email'] 		= $user->email;
+			$_SESSION['user']['last_name'] 	= $user->last_name;
+			$_SESSION['user']['first_name'] = $user->first_name;
+			// redirection vers la page de profile de l'utilisateur 
+			header('Location: profile.php');
+			exit();		
 		}
 		else
 		{
-			// redirection vers la page de profile de l'utilisateur 
-			header('Location: profile.php');
-			exit();	
+			//Si le compte n'est pas encore activé rediriger vers la vue message activation compte
+			header('Location: rappelle-activation.php?user=' . $user->pseudo . '&email=' . $user->email);
+			exit();
 		}
 		
 	}

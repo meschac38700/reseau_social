@@ -55,7 +55,7 @@ create database IF NOT EXISTS ${dbName};
 		email VARCHAR(255) NOT NULL,
 		active ENUM('1','0') DEFAULT('0')
 	);
-	TRUNCATE ${table_name};
+	TRUNCATE TABLE ${table_name};
 	INSERT INTO users(last_name, first_name, pseudo, password, email, active) 
 				VALUES ( '${user_last_name}', '${user_first_name}', '${user_pseudo}', sha1('${user_password}'), '${user_email}', '${user_active}' );
 "
