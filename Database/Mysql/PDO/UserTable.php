@@ -196,7 +196,7 @@ class UserTable
 	public function active($pseudo)
 	{
 		$request = "UPDATE users SET active ='1' WHERE pseudo = '".$pseudo."'";
-		$success = $this->pdo->query($request);
+		$success = $this->pdo->exec($request);
 		return $success;
 	}
 	/**
