@@ -83,7 +83,7 @@ if( isset($_POST['inscription']) )
 				$from_user	= $config['app_name'];
 				$from_email = $config['email'];
 				$subject 	= $config['app_name']. " - Activation de compte";
-				$token 		= sha1($pseudo.$email.$password);
+				$token 		= sha1($pseudo.$email.sha1($password));
 				$activation_url = $config['web_url'] . '/activation.php?user='.$pseudo.'&amp;token='.$token;
 				
 				//memoire temporaire de la vue email activation

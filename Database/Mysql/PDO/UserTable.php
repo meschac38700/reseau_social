@@ -100,13 +100,21 @@ class UserTable
 		return $this->pdo;
 	}
 
+
+	public function delete( $pseudo )
+	{
+		$requete = "DELETE FROM users WHERE pseudo='". $pseudo ."'";
+		$result = $this->pdo->exec($requete);
+		return $result;
+	}
+
 	/**
 	 * get all the user presents in the DB
 	 * @return Array(Object, Object...) 
 	 */
 	public function all()
 	{
-		$results = $this->pdo->query('select * from users');
+		$results = $this->pdo->exec('select * from users');
 		return $results;
 	}
 
@@ -190,12 +198,12 @@ class UserTable
 	}
 
 	/**
-	 * active the current user
+	 *  the current user
 	 * @return [type] [description]
 	 */
-	public function active($pseudo)
+	public function active ($pseudo)
 	{
-		$request = "UPDATE users SET active ='1' WHERE pseudo = '".$pseudo."'";
+		$request = "UPDATE users SET  ='1' WHERE pseudo = '".$pseudo."'";
 		$success = $this->pdo->exec($request);
 		return $success;
 	}
