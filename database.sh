@@ -33,7 +33,7 @@ read -p "Enter mysql root's password : " password
 read -p "Would you custom database's name ? (o/n): " response
 
 #if user want to define (him/her)sefl the name of the database
-if [ ! -z $response ] && [ $response -eq "o"  ]; then
+if [ -z "${response}" ] && [ $response -eq "o"  ]; then
 	#ask him/her to enter a name
  	read -p 'Database name : ' dbName
 else 
@@ -43,18 +43,19 @@ fi
 #connection to mysql
 mysql -hlocalhost -u $user -p${password} -e "
 
-create database IF NOT EXISTS ${dbName};
+drop database if exists ${dbName};
+create database ${dbName};
 	use ${dbName};
-	create table IF NOT EXISTS ${table_name}(
+	create table  ${table_name}(
 		id INT PRIMARY KEY AUTO_INCREMENT,
 		last_name VARCHAR(255) NOT NULL,
 		first_name VARCHAR(255) NOT NULL,
 		pseudo VARCHAR(255) UNIQUE NOT NULL,
 		password VARCHAR(255) UNIQUE NOT NULL,
 		email VARCHAR(255) NOT NULL,
-		active ENUM('1','0') DEFAULT('0')
+		active ENUM('1','0') DEFAULT('0'),
+		created_at DATETIME NOT NULL DEFAULT(now())
 	);
-	TRUNCATE TABLE ${table_name};
 	INSERT INTO users(last_name, first_name, pseudo, password, email, active) 
 				VALUES ( '${user_last_name}', '${user_first_name}', '${user_pseudo}', sha1('${user_password}'), '${user_email}', '${user_active}' );
 "
