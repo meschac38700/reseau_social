@@ -14,10 +14,12 @@ if( !empty($_SESSION['user']['pseudo']) )
 	$user_exist = $user->get($_SESSION['user']['pseudo']);
 	if( !$user_exist )
 	{
+		session_destroy();
+		$_SESSION[]= [];
 		header('Location: connexion.php');
 		exit();
 	}
-	if($page != "profile.php")
+	if($page != "profile.php" && $page !="")
 	{
 		header('Location: profile.php');
 		exit();

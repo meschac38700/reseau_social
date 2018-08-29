@@ -8,7 +8,7 @@
       <li class="nav-item <?php echo (active('')) ?>">
         <a class="nav-link" href="/">Accueil</a>
       </li>
-      <?php if($_SERVER["REQUEST_URI"] != "/profile.php"):?>
+      <?php if(empty($_SESSION['user'])):?>
       <li class="nav-item <?php echo (active('inscription.php'))?>">
         <a class="nav-link" href="inscription.php">Inscription</a>
       </li>
@@ -18,6 +18,9 @@
         </li>
       <?php endif?>
       <?php if(!empty($_SESSION['user'])): ?>
+        <li class="nav-item <?php echo (active('profile.php')) ?>">
+          <a class="nav-link" href="profile.php">Mon profil</a>
+        </li>
         <li class="nav-item <?php echo (active('deconnexion.php'))?>">
           <a class="nav-link" href="deconnexion.php">Deconnexion</a>
         </li>

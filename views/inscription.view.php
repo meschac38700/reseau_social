@@ -6,7 +6,7 @@ include('../views/partials/_header.php');
 	
 	<h1 class="text-center title">Inscription à Boom social network</h1>
 
-	<form action="" method="POST" novalidate="" >
+	<form action="" method="POST" >
 		
 		<!-- Le champ nom -->
 		<div class="form-group">

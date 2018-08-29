@@ -203,7 +203,7 @@ class UserTable
 	 */
 	public function active ($pseudo)
 	{
-		$request = "UPDATE users SET  ='1' WHERE pseudo = '".$pseudo."'";
+		$request = "UPDATE users SET  active='1' WHERE pseudo = '".$pseudo."'";
 		$success = $this->pdo->exec($request);
 		return $success;
 	}
