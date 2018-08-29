@@ -6,3 +6,9 @@
 
         -   Create a new database.php file in the config folder
         -   take inspiration from the contents of database.example.php to configure your database.
+
+-   To start the server
+
+    -   execute server.sh script file
+
+       
