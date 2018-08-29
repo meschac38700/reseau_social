@@ -4,8 +4,9 @@ if(session_status() == PHP_SESSION_NONE)
 {
 	session_start();
 }
-require("../vendor/autoload.php");
-require("../config/app.php");
+$title= "Activate Account";
+require(__DIR__."/../vendor/autoload.php");
+require(__DIR__."/../config/app.php");
 use Database\Mysql\PDO\UserTable;
 if( !empty($_GET['user']) && !empty($_GET['token']) )
 {

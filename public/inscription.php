@@ -4,6 +4,7 @@ if(session_status() == PHP_SESSION_NONE)
 {
 	session_start();
 }
+$title= "Sign up";
 require("../vendor/autoload.php");
 include("../config/app.php");
 include("../views/lang/".$config['lang']."/form.php");
@@ -48,7 +49,7 @@ if( isset($_POST['inscription']) )
 
 			if($check_email)
 			{
-				$error_fields['email'] = getMessage($lang['form']['field']['pseudo'], $lang['form']['message']['already_used']);
+				$error_fields['email'] = getMessage($lang['form']['field']['email'], $lang['form']['message']['already_used']);
 			}
 		}
 		else

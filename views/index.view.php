@@ -7,7 +7,7 @@ include(__DIR__.'/partials/_header.php');
 	    <div class="col-sm-5 offset-sm-1">
 	    	<img src="https://images.careerbuilder.vn/content/news/20160802/css-organization_1470108140.jpg" width="80%" alt="code">
 	    </div>
-	    <div class="col-sm-5  lead">
+	    <div class="col-sm-6 col-offset-sm-0 jumbotron lead">
 	    	<p><b>Boom Social Network</b> est le réseau social des développeurs ⌨ </p>
 			<p>Et qui dit développeurs, dit également <i>code source!</i> ✍ </p>
 

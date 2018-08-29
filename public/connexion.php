@@ -4,8 +4,8 @@ if(session_status() == PHP_SESSION_NONE)
 {
 	session_start();
 }
+$title ="Connection";
 require_once(__DIR__."/../vendor/autoload.php");
-
 if( !isset($config) ) include(__DIR__.'/../config/app.php');
 use Database\Mysql\PDO\UserTable;
 include('../views/lang/'.$config['lang'].'/form.php');
@@ -21,7 +21,8 @@ if( isset($_POST['connexion']) )
 		$user = new UserTable($_POST);
 		// check dans la DB si l'identifiant existe et surtout le mdp correspond au mdp qui a été donné ! TODO
 		$user = $user->identifier(null, true);
-
+		
+		extract($_POST);
 		if( !$user )
 		{
 			$_SESSION['erreur_message'] = $lang['form']['message']['fail_identification'];

@@ -12,14 +12,14 @@ include('../views/partials/_header.php');
 		<!-- Le champ identifiant -->
 		<div class="form-group">
 			<label for="identifier" class="label-control"><?=$lang['form']['field']['identifier']?></label>
-			<input type="text" class="form-control <?php echo has_error( 'identifier', $error_fields) ?>" placeholder="Entre votre identifiant (email ou pseudo)" required="required" name="identifier" id='identifier'>
+			<input value="<?= $identifier ?? '' ?>" type="text" class="form-control <?php echo has_error( 'identifier', $error_fields) ?>" placeholder="Entre votre identifiant (email ou pseudo)" required="required" name="identifier" id='identifier'>
 			<?php error_span($lang['form']['field']['identifier'], $error_fields) ?>
 		</div>
 
 		<!-- Le champ mot de passe -->
 		<div class="form-group">
 			<label for="password" class="label-control"><?=$lang['form']['field']['password']?></label>
-			<input type="password" class="form-control <?php echo has_error( 'password', $error_fields) ?>" placeholder="Entre votre mot de passe..." required="required" name="password" id='password'>
+			<input value="<?= $password ?? '' ?>" type="password" class="form-control <?php echo has_error( 'password', $error_fields) ?>" placeholder="Entre votre mot de passe..." required="required" name="password" id='password'>
 			<?php error_span($lang['form']['field']['password'], $error_fields) ?>
 		</div>
 		
