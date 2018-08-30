@@ -2,6 +2,31 @@
 
 use Database\Mysql\PDO\UserTable;
 
+if( ! function_exists('redirect'))
+{
+    /**
+     * redirect to another page
+     * @param $page
+     * @param $p_params
+     */
+    function redirect($page, $p_params="")
+    {
+        $params = "";
+        if($p_params)
+        {
+            $params = "?";
+            foreach ($p_params as $key => $value)
+            {
+                $params .= $key."=".$value ."&";
+            }
+            // replace the last & to empty stryng ""
+            $params = preg_replace("%\&$%i", "", $params);
+        }
+        header('Location: '.$page.'.php'.$params);
+        exit();
+    }
+}
+
 if( !function_exists('activation_enabled') )
 {
 	/**

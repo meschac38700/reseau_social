@@ -32,8 +32,7 @@ if( !empty($_GET['user']) && !empty($_GET['token']) )
 				$_SESSION['user']['last_name'] = $user->last_name;
 				$_SESSION['user']['first_name'] = $user->first_name;
 				// redirection vers la page de profile de l'utilisateur 
-				header('Location: profile.php');
-				exit();
+                redirect('profile');
 			}
 			//Delete the user account due to the account activation deadline that was exceeded
 			$user_instance->delete($user->pseudo);			
@@ -42,7 +41,6 @@ if( !empty($_GET['user']) && !empty($_GET['token']) )
 	}
 	$_SESSION['deadline'] = "La date limite d'activation du compte a été depassée! Veuillez vous réinscrire <a href='". $config['web_url'] ."/inscription.php'>ici</a>";
 	$_SESSION['erreur_message'] = "Il y a eu un problème lors de la tentative d'activation du compte !";
-	header('Location: erreur.php');
-	exit();
+	redirect('erreur');
 	
 }

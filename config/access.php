@@ -1,6 +1,4 @@
-<?php 
-
-
+<?php
 $uri = explode('/',$_SERVER["REQUEST_URI"] );
 $page = $uri[1];
 
@@ -16,13 +14,11 @@ if( !empty($_SESSION['user']['pseudo']) )
 	{
 		session_destroy();
 		$_SESSION[]= [];
-		header('Location: connexion.php');
-		exit();
+		redirect('connexion');
 	}
 	if($page != "profile.php" && $page !="")
 	{
-		header('Location: profile.php');
-		exit();
+		redirect('profile');
 	}
 }
 else
@@ -30,7 +26,6 @@ else
 	
 	if( $page == "profile.php" )
 	{
-		header('Location: connexion.php');
-		exit();
+		redirect('connexion');
 	}
 }

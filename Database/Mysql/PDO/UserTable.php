@@ -5,7 +5,7 @@ namespace Database\Mysql\PDO;
 class UserTable
 {
 
-	private $pdo;
+	private static $pdo = null;
 
 	private $last_name;
 	private $first_name;
@@ -18,22 +18,26 @@ class UserTable
 	{
 		try
 		{
-			include(__DIR__.'/../../../config/database.php');
-			$this->pdo = new \PDO(
-									'mysql:host='.$config['database']['host'].
-									';dbname='.$config['database']['dbname'],
-									$config['database']['user'],
-									$config['database']['password']
-								);
-			$this->pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
-			$this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+			if(!self::$pdo)
+			{
+				include(__DIR__ . '/../../../config/database.php');
+				self::$pdo = new \PDO(
+					'mysql:host=' . $config['database']['host'] .
+						';dbname=' . $config['database']['dbname'],
+					$config['database']['user'],
+					$config['database']['password']
+				);
+				self::$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+				self::$pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
 
-			$this->last_name	= $data['last_name']??null;
-			$this->first_name	= $data['first_name']??null; 
-			$this->email 		= $data['email']??null;
-			$this->pseudo		= $data['pseudo']??null;
-			$this->password		= $data['password']??null;
-			$this->identifier	= $data['identifier']??null;
+			}
+			$this->last_name = $data['last_name'] ?? null;
+			$this->first_name = $data['first_name'] ?? null;
+			$this->email = $data['email'] ?? null;
+			$this->pseudo = $data['pseudo'] ?? null;
+			$this->password = $data['password'] ?? null;
+			$this->identifier = $data['identifier'] ?? null;
+			
 		}
 		catch(\Exception $e)
 		{
@@ -95,16 +99,16 @@ class UserTable
 	}
 
 
-	public function getPDO()
+	public static function getPDO()
 	{
-		return $this->pdo;
+		return self::$pdo;
 	}
 
 
 	public function delete( $pseudo )
 	{
 		$requete = "DELETE FROM users WHERE pseudo='". $pseudo ."'";
-		$result = $this->pdo->exec($requete);
+		$result = self::$pdo->exec($requete);
 		return $result;
 	}
 
@@ -114,7 +118,7 @@ class UserTable
 	 */
 	public function all()
 	{
-		$results = $this->pdo->exec('select * from users');
+		$results = self::$pdo->exec('select * from users');
 		return $results;
 	}
 
@@ -127,7 +131,7 @@ class UserTable
 	{
 		try
 		{
-			$query = $this->pdo->prepare("select * from users where pseudo =:pseudo");
+			$query = self::$pdo->prepare("select * from users where pseudo =:pseudo");
 			$query->execute( ['pseudo'=> $pseudo ?? $this->identifier] );
 			return $query->fetch();
 		}
@@ -146,7 +150,7 @@ class UserTable
 	{
 		try
 		{
-			$query = $this->pdo->prepare("select * from users where email =:email");
+			$query = self::$pdo->prepare("select * from users where email =:email");
 			$query->execute( ['email'=>$email ?? $this->identifier] );
 			return $query->fetch();
 		}
@@ -165,7 +169,7 @@ class UserTable
 	{
 		try
 		{
-			$result = $this->pdo->prepare("select * from users where id =:id");
+			$result = self::$pdo->prepare("select * from users where id =:id");
 			$query->execute( ['id'=>$id ?? $this->id] );
 			return $query->fetch();
 		}
@@ -204,7 +208,7 @@ class UserTable
 	public function active ($pseudo)
 	{
 		$request = "UPDATE users SET  active='1' WHERE pseudo = '".$pseudo."'";
-		$success = $this->pdo->exec($request);
+		$success = self::$pdo->exec($request);
 		return $success;
 	}
 	/**
@@ -248,7 +252,7 @@ class UserTable
 		{
 			$requete 	= "insert into users(last_name, first_name, email, password, pseudo) values(:last_name, :first_name, :email, :password, :pseudo)";
 
-			$query 		= $this->pdo->prepare($requete);
+			$query 		= self::$pdo->prepare($requete);
 
 			$query->execute([
 				'last_name' 		=> $this->last_name,

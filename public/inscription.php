@@ -96,14 +96,13 @@ if( isset($_POST['inscription']) )
 				$emailSend = sendEmailUTF_8($to, $from_user, $from_email, $subject, $content);
 
 				//redirection vers la page rappelle activation compte
-				header('Location: rappelle-activation.php?user='.$pseudo.'&email='.$email);
+                redirect('rappelle-activation', ["user"=>$pseudo, "email"=>$email]);
 			}
 			else
 			{
 				//En cas d'erreur lors de la création du compte redirection vers la page erreur.php			
 				$_SESSION['erreur_message'] = $success['message'];
-				header("Location: erreur.php");
-				exit();
+                redirect('erreur');
 			}
 		}
 		

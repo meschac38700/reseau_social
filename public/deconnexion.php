@@ -1,8 +1,6 @@
-<?php 
-
+<?php
 session_start();
-
 session_destroy();
 $_SESSION = [];
-header('Location: index.php');
-exit();
+require(__DIR__.'/../vendor/autoload.php');
+redirect('index');

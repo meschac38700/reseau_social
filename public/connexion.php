@@ -26,8 +26,7 @@ if( isset($_POST['connexion']) )
 		if( !$user )
 		{
 			$_SESSION['erreur_message'] = $lang['form']['message']['fail_identification'];
-			header('Location: connexion.php');
-			exit();
+            redirect('connexion');
 		}
 		
 		if( $user->active == '1' )
@@ -38,14 +37,12 @@ if( isset($_POST['connexion']) )
 			$_SESSION['user']['last_name'] 	= $user->last_name;
 			$_SESSION['user']['first_name'] = $user->first_name;
 			// redirection vers la page de profile de l'utilisateur 
-			header('Location: profile.php');
-			exit();		
+            redirect('profile');
 		}
 		else
 		{
 			//Si le compte n'est pas encore activé rediriger vers la vue message activation compte
-			header('Location: rappelle-activation.php?user=' . $user->pseudo . '&email=' . $user->email);
-			exit();
+            redirect('rappelle-activation', ["user"=>$user->pseudo, "email"=>$user->email]);
 		}
 		
 	}
