@@ -19,6 +19,7 @@ include('../views/partials/_header.php');
 		<!-- Le champ mot de passe -->
 		<div class="form-group">
 			<label for="password" class="label-control"><?=$lang['form']['field']['password']?></label>
+            <a href="password-lost.php" class="active">(Mot de passe oublié)</a>
 			<input value="<?= $password ?? '' ?>" type="password" class="form-control <?php echo has_error( 'password', $error_fields) ?>" placeholder="Entre votre mot de passe..." required="required" name="password" id='password'>
 			<?php error_span($lang['form']['field']['password'], $error_fields) ?>
 		</div>

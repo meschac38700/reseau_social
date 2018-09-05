@@ -12,6 +12,7 @@ class UserTable
 	private $email;
 	private $pseudo;
 	private $password;
+	private $token;
 	private $identifier;
 
 	public function __construct( $data )
@@ -37,6 +38,7 @@ class UserTable
 			$this->pseudo = $data['pseudo'] ?? null;
 			$this->password = $data['password'] ?? null;
 			$this->identifier = $data['identifier'] ?? null;
+			$this->token = $data['token'] ?? null;
 			
 		}
 		catch(\Exception $e)
@@ -48,7 +50,16 @@ class UserTable
 	/**
 	 * Getters and setters
 	 */
+
+	public function getToken()
+	{
+		return $this->token;
+	}
 	
+	public function setToken( $new_token )
+	{
+		$this->token = $new_token;
+	}
 	public function getLastName()
 	{
 		return $this->last_name;
@@ -104,6 +115,23 @@ class UserTable
 		return self::$pdo;
 	}
 
+    /**
+     * get an user idenfied by his password
+     * @param $password
+     * @return mixed|null
+     */
+	public function checkPassword( $password )
+    {
+        try
+        {
+            $request =  "SELECT * FROM users WHERE password= :password";
+            $query = self::$pdo->prepare($request);
+            $query->execute(['password'=>sha1($password)]);
+            return $query->rowCount();
+        }
+        catch(\Exception $e){}
+		return null;
+    }
 
 	public function delete( $pseudo )
 	{
@@ -169,14 +197,31 @@ class UserTable
 	{
 		try
 		{
-			$result = self::$pdo->prepare("select * from users where id =:id");
-			$query->execute( ['id'=>$id ?? $this->id] );
+            $query = self::$pdo->prepare("select * from users where id =:id");
+			$query->execute( ['id'=> $id ?? $this->id] );
 			return $query->fetch();
 		}
 		catch(\Exception $e)
 		{
 			return null;
 		}
+	}
+	/**
+	 * specifique query, that can be insert query for example 
+	 */
+	public static function query(string $request, array $data=null )
+	{
+		try
+		{
+			$query = self::$pdo->prepare($request);
+			$query->execute($data);
+			if( $query->rowCount()>0)
+			{
+				return $query->fetch();
+			}
+		}
+		catch(\Exception $e){}
+		return null;
 	}
 	/**
 	 * get only one user identified either by pseudo or by email or by id
@@ -193,6 +238,10 @@ class UserTable
 		elseif( preg_match('%@%i', $filter??$this->identifier) )
 		{
 			$user = $this->getByEmail( $filter );
+		}
+		elseif( preg_match('%^_[a-z0-9]+%i', $filter??$this->identifier))
+		{
+			$user = $this->getByToken( $filter );
 		}
 		else
 		{
@@ -231,6 +280,7 @@ class UserTable
 						return $user;
 					}
 					return false;
+					return false;
 				}
 				return $user;//sinon retournons l'utilisateur trouvé
 			}
@@ -238,6 +288,18 @@ class UserTable
 		catch(\Exception $e)
 		{}
 		return false;
+	}
+
+	public function getByToken( $p_token=null )
+	{
+		$request = "SELECT * FROM users WHERE token=:token";
+		$query = self::$pdo->prepare($request);
+		$query->execute(['token'=>$token??$this->token]);
+		if( $query->rowCount() > 0 )
+		{
+			return $query->fetch();
+		}
+		return null;
 	}
 
 	/**
@@ -250,7 +312,7 @@ class UserTable
 		$execution=[];
 		try
 		{
-			$requete 	= "insert into users(last_name, first_name, email, password, pseudo) values(:last_name, :first_name, :email, :password, :pseudo)";
+			$requete 	= "insert into users(last_name, first_name, email, password, pseudo, token) values(:last_name, :first_name, :email, :password, :pseudo, :token)";
 
 			$query 		= self::$pdo->prepare($requete);
 
@@ -259,7 +321,8 @@ class UserTable
 				'first_name' 		=> $this->first_name,
 				'email' 			=> $this->email,
 				'password' 			=> sha1($this->password),
-				'pseudo' 			=> $this->pseudo
+				'pseudo' 			=> $this->pseudo,
+				'token'				=> $this->token
 			]);
 			$execution['status'] 	= true;
 			$execution['message'] 	= "successful operation";

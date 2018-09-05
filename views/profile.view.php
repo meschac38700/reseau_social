@@ -4,7 +4,7 @@ include(__DIR__.'/partials/_header.php');
 <div class="content" style="padding-top: 2em ">
 	<div >
 		<h3 class="text-success">Bienvenue <?= $_SESSION['user']['pseudo'] ?></h3>
-		<?php var_dump($_SESSION); ?>
+		<?php var_dump($_SESSION['user']); ?>
   	</div>
 	<div class="row">
 		<div class="col-sm-4 col-md-4 col-xs-4">

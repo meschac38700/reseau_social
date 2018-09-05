@@ -122,6 +122,18 @@ if( !function_exists('getMessage') )
 	}
 }
 
+if( !function_exists('getToken'))
+{
+    /**
+     * @param $user database user
+     * @return String token
+     */
+    function getToken( $user )
+    {
+        return sha1($user->pseudo.$user->email.sha1($user->password));
+    }
+}
+
 if( !function_exists('sendEmailUTF_8'))
 {
 	function sendEmailUTF_8($to, $from_user, $from_email, $subject = '(No subject)', $message = '')

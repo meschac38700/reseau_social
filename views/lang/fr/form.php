@@ -8,6 +8,7 @@ $lang['form']['message']['bad_password_confirm']	= "S'il vous plait ! veuillez r
 $lang['form']['message']['bad_password']			= "Le mot de passe n'est pas";
 $lang['form']['message']['bad_identifier']			= "L'identifiant n'est bon !";
 $lang['form']['message']['fail_identification']		= "Impossible de vous identifier! L'identifiant ou le mdp ne sont pas bon!";
+$lang['form']['message']['email_invalid']           = "Cette adresse email est inconnue de notre base de données !";
 
 $lang['form']['field']['first_name'] 				= "Prenom";
 $lang['form']['field']['last_name'] 				= "Nom";

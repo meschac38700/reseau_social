@@ -25,6 +25,7 @@ user_password=admin
 user_pseudo=admin
 user_email=admin@admin.com
 user_active='1'
+token=$user_email$user_password$user_pseudo
 
 read -p "Enter mysql root's name : " user
 read -p "Enter mysql root's password : " password
@@ -40,7 +41,7 @@ else
 	dbName=reseauSocial
 fi
 
-#connection to mysql
+#connection to mysql db
 mysql -hlocalhost -u $user -p${password} -e "
 
 drop database if exists ${dbName};
@@ -53,11 +54,12 @@ create database ${dbName};
 		pseudo VARCHAR(255) UNIQUE NOT NULL,
 		password VARCHAR(255) UNIQUE NOT NULL,
 		email VARCHAR(255) NOT NULL,
+		token VARCHAR(255) UNIQUE NOT NULL,
 		active ENUM('1','0') DEFAULT('0'),
 		created_at DATETIME NOT NULL DEFAULT(now())
 	);
-	INSERT INTO users(last_name, first_name, pseudo, password, email, active) 
-				VALUES ( '${user_last_name}', '${user_first_name}', '${user_pseudo}', sha1('${user_password}'), '${user_email}', '${user_active}' );
+	INSERT INTO users(last_name, first_name, pseudo, password, email, token, active) 
+				VALUES ( '${user_last_name}', '${user_first_name}', '${user_pseudo}', sha1('${user_password}'), '${user_email}', sha1('${token}'), '${user_active}' );
 "
 echo -e "${GREEN}Database ${NC}[${YELLOW}${dbName}${NC}] ${GREEN}created with table users\nAnd inserted the first user with pseudo ${NC}[${YELLOW}${user_pseudo}${NC}]${GREEN} and password ${NC}[${YELLOW}${user_password}${NC}]"
 

@@ -16,6 +16,7 @@ if( isset($_POST['inscription']) )
 {
 	extract($_POST);
 	$error_fields = not_empty($_POST);
+
 	if( empty($error_fields) )
 	{
 		$user = new UserTable($_POST);
@@ -46,7 +47,6 @@ if( isset($_POST['inscription']) )
 			// verifier si l'email n'est pas deja utilisé !
 			$check_email = $user->get($email);
 			//Si c'est le cas, le mail a deja été utilisé
-
 			if($check_email)
 			{
 				$error_fields['email'] = getMessage($lang['form']['field']['email'], $lang['form']['message']['already_used']);
@@ -60,12 +60,21 @@ if( isset($_POST['inscription']) )
 		// verifier si le champs mot de passe contient au moins 6 caractères 
 		if( mb_strlen($password) >= 6 )
 		{
-			// verifier si le champs confirmer mot de passe correspond au mot de passe rentré pécédemment !
-			if( $password !== $password_confirm)
-			{
-				$error_fields['password_confirm'] = getMessage($lang['form']['field']['password_confirm'],$lang['form']['message']['bad_password_confirm']);
-			}
-		}
+		    //verifier si le mot de passe existe deja dans la bdd
+            if( $user->checkPassword($password))
+            {
+                $error_fields['password'] = getMessage($lang['form']['field']['password'], $lang['form']['message']['already_used']);
+            }
+            else
+            {
+                // verifier si le champs confirmer mot de passe correspond au mot de passe rentré pécédemment !
+                if( $password !== $password_confirm)
+                {
+                    $error_fields['password_confirm'] = getMessage($lang['form']['field']['password_confirm'],$lang['form']['message']['bad_password_confirm']);
+                }
+            }
+
+        }
 		else
 		{
 			$error_fields['password'] = getMessage($lang['form']['field']['password'],$lang['form']['message']['min'], 6 );
@@ -74,7 +83,8 @@ if( isset($_POST['inscription']) )
 		//Si tous s'est bien passé, le formulaire a été bien remplis ...
 		if( empty($error_fields) )
 		{
-			
+			$token = '_'.sha1($email.$password.$pseudo);
+			$user->setToken($token);		
 			$success 	= $user->insert();
 			if( $success['status'] )
 			{

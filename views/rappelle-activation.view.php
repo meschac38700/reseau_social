@@ -1,5 +1,5 @@
 <?php 
-
+$title="Activation";
 include(__DIR__.'/partials/_header.php');
 ?>
 

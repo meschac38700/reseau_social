@@ -6,6 +6,7 @@ $lang['form']['message']['email']					= "The format of this email is incorrect !
 $lang['form']['message']['already_used']			= "Sorry ! This :attribute has already been used! please enter another one .";
 $lang['form']['message']['bad_password_confirm']	= "please ! Enter the same password !";
 $lang['form']['message']['fail_identification']		= "Impossible to sign in ! please check your id or your password";
+$lang['form']['message']['email_invalid']           = "Unknown email address please check your email address !";
 
 $lang['form']['field']['first_name'] 				= "First name"; 
 $lang['form']['field']['last_name'] 				= "Last name";
