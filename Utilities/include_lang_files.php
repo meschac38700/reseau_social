@@ -1,12 +1,12 @@
 <?php 
 $langs = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-include(__DIR__.'/../config/app.php');
+require_once(__DIR__.'/../config/app.php');
 if( !empty( $config['lang'] ) )
 {
-	include(__DIR__."/../views/lang/{$config['lang']}/form.php");
+	require(__DIR__."/../views/lang/{$config['lang']}/form.php");
 }
-else
+else 
 {
-	include(__DIR__."/../views/lang/$langs[0]/form.php");
+	require(__DIR__."/../views/lang/$langs[0]/form.php");
 }
+

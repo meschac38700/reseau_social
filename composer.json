@@ -12,6 +12,7 @@
         },
 		"files": [
             "./Utilities/functions.php",
+            "./Utilities/include_lang_files.php",
             "./config/access.php",
             "config/app.php"
     	]

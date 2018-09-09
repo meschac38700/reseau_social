@@ -21,7 +21,7 @@ if( !empty($_GET['user']) && !empty($_GET['token']) )
 		{
 			//TODO ajout un attribut created_at dans la table user
 			$created_at = new DateTime($user->created_at);
-			//check if user can alway activate his account
+			//check if user can alway activate his account, if the deadline is not exceeded yet
 			if( activation_enabled( $created_at ) )
 			{
 				$success = $user_instance->active($user->pseudo);

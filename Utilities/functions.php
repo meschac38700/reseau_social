@@ -195,16 +195,30 @@ if( !function_exists('has_error') )
 	}
 }
 
+if(! function_exists('display_div_error'))
+{
+	function display_div_error( $result )
+	{
+		if( $result )
+		{
+			echo "<div style='margin-top: 2em;' class='alert-".$result['type'] ."'> <p>". $result['message'] ."</p> </div>";
+		}
+	}
+}
+
 if(!function_exists('error_span') )
 {
 	function error_span($field, $error_fields )
 	{
-		//si un champs est erroné 
-		if( array_key_exists($field, $error_fields) )
+		if( $error_fields && is_array($error_fields)) 
 		{
-			//affichage du span avec le message d'erreur
-			echo "<span class='text-danger'>$error_fields[$field]</span>";
-			
+			//si un champs est erroné 
+			if( array_key_exists($field, $error_fields) )
+			{
+				//affichage du span avec le message d'erreur
+				echo "<span class='text-danger'>$error_fields[$field]</span>";
+				
+			}
 		}
 	}
 }
