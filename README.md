@@ -16,7 +16,12 @@
                                         - auth_username=your_address@gmail.com
                                         force_sender=your_address@gmail.com
                                         hostname=127.0.0.1 (or localhost)
-                                Save the file
+                                Save the sendmail.ini file
+                        Step 4 : 
+                                Edit your php.ini file and set this following option:
+                                        sendmail_path="C:\sendmail\sendmail.exe"
+                                Save the php.ini file
+                               
                                 Restart your server
         
         -   Launch database.sh file.
